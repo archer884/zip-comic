@@ -1,0 +1,11 @@
+[package]
+name = "zc"
+version = "0.1.0"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.43"
+clap = { git = "https://github.com/clap-rs/clap" }
+zip = "0.5.13"
