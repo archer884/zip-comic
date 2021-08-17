@@ -44,7 +44,7 @@ impl Opts {
                     .file_name()
                     .unwrap_or_else(|| OsStr::new("archive"))
                     .to_owned();
-                archive_name.push(".zip");
+                archive_name.push(".cbz");
                 Cow::from(path.with_file_name(archive_name))
             })
     }
