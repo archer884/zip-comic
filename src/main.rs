@@ -38,7 +38,6 @@ impl Opts {
 
                 // Turns out that .with_extension() will pretty much NEVER do the right thing for
                 // a directory path. As such, we're going to roll our own. 🎵 ...Cowboy! 🎵
-                // Cow::from(path.with_extension("zip"))
 
                 let mut archive_name = path
                     .file_name()
