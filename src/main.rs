@@ -1,5 +1,6 @@
 use std::{
     borrow::Cow,
+    ffi::OsStr,
     fs::{self, File},
     io,
     path::Path,
@@ -34,7 +35,17 @@ impl Opts {
             .map(|path| Cow::Borrowed(path.as_ref()))
             .unwrap_or_else(|| {
                 let path: &Path = self.path.as_ref();
-                Cow::from(path.with_extension("zip"))
+
+                // Turns out that .with_extension() will pretty much NEVER do the right thing for
+                // a directory path. As such, we're going to roll our own. 🎵 ...Cowboy! 🎵
+                // Cow::from(path.with_extension("zip"))
+
+                let mut archive_name = path
+                    .file_name()
+                    .unwrap_or_else(|| OsStr::new("archive"))
+                    .to_owned();
+                archive_name.push(".zip");
+                Cow::from(path.with_file_name(archive_name))
             })
     }
 }
@@ -69,4 +80,22 @@ fn run(opts: &Opts) -> anyhow::Result<()> {
     }
 
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use std::path::Path;
+
+    use crate::Opts;
+
+    #[test]
+    fn destination() {
+        let opts = Opts {
+            path: String::from("/Red vs. Blue"),
+            output: None,
+            force: false,
+        };
+
+        assert_eq!(opts.destination(), Path::new("/Red vs. Blue.zip"))
+    }
 }
