@@ -17,6 +17,10 @@ struct Opts {
     path: String,
     /// destination zip archive
     output: Option<String>,
+
+    /// remove folder when done
+    #[clap(short, long)]
+    force: bool,
 }
 
 impl Opts {
@@ -58,6 +62,10 @@ fn run(opts: &Opts) -> anyhow::Result<()> {
             )?;
             io::copy(&mut File::open(entry.path())?, &mut archive)?;
         }
+    }
+
+    if opts.force {
+        fs::remove_dir_all(opts.source())?;
     }
 
     Ok(())
