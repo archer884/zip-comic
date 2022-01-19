@@ -6,13 +6,13 @@ use std::{
     path::Path,
 };
 
-use clap::Clap;
+use clap::Parser;
 use zip::{write::FileOptions, CompressionMethod, ZipWriter};
 
 /// comic reader archive creator
 ///
 /// Note: this zip utility only works for flat archives.
-#[derive(Clap, Clone, Debug)]
+#[derive(Clone, Debug, Parser)]
 struct Opts {
     /// directory to be zipped
     path: String,
@@ -50,8 +50,7 @@ impl Opts {
 }
 
 fn main() {
-    let opts = Opts::parse();
-    if let Err(e) = run(&opts) {
+    if let Err(e) = run(&Opts::parse()) {
         eprintln!("{}", e);
         std::process::exit(1);
     }

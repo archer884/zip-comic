@@ -7,5 +7,5 @@ edition = "2018"
 
 [dependencies]
 anyhow = "1.0.43"
-clap = { git = "https://github.com/clap-rs/clap" }
+clap = { version = "3.0.10", features = ["derive"] }
 zip = "0.5.13"
